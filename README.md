@@ -184,21 +184,139 @@ Now we introduce some changes in the code
 **app/app.css**
 
 ```css
+body {
+    padding-top: 20px;
+  }
 
+.phones {
+  list-style: none;
+}
+
+.phones li {
+  clear: both;
+  height: 115px;
+  padding-top: 15px;
+}
+
+.thumb {
+  float: left;
+  height: 100px;
+  margin: -0.5em 1em 1.5em 0;
+  padding-bottom: 1em;
+  width: 100px;
+}
 ```
 
 **app/phone-list/phone-list.template.html**
 
 ```javascript
+<div class="col-md-2">
+  <!--Sidebar content-->
 
+  <p>
+    Search:
+    <input ng-model="$ctrl.query" />
+  </p>
+
+  <p>
+    Sort by:
+    <select ng-model="$ctrl.orderProp">
+      <option value="name">Alphabetical</option>
+      <option value="age">Newest</option>
+    </select>
+  </p>
+
+</div>
+<div class="col-md-10">
+  <!--Body content-->
+
+  <ul class="phones">
+    <li ng-repeat="phone in $ctrl.phones | filter:$ctrl.query | orderBy:$ctrl.orderProp" class="thumbnail">
+      <a href="#!/phones/{{phone.id}}" class="thumb">
+        <img ng-src="{{phone.imageUrl}}" alt="{{phone.name}}" />
+      </a>
+      <a href="#!/phones/{{phone.id}}">{{phone.name}}</a>
+      <p>{{phone.snippet}}</p>
+    </li>
+  </ul>
+
+</div>
+</div>
+</div>
 ```
 
 **e2e-tests/scenarios.js**
 
 ```javascript
+'use strict';
+// AngularJS E2E Testing Guide:
+// https://docs.angularjs.org/guide/e2e-testing
+describe('PhoneCat Application', function() {
+  describe('phoneList', function() {
+    beforeEach(function() {
+      browser.ignoreSynchronization = true;  // Disable Angular synchronization
+      browser.get('http://127.0.0.1:5500/app/index.html');
+    });
+    it('should filter the phone list as a user types into the search box', function() {
+      var phoneList = element.all(by.repeater('phone in $ctrl.phones'));
+      var query = element(by.model('$ctrl.query'));
+      expect(phoneList.count()).toBe(20);
+      query.sendKeys('nexus');
+      expect(phoneList.count()).toBe(1);
+      query.clear();
+      query.sendKeys('motorola');
+      expect(phoneList.count()).toBe(8);
+    });
+    it('should be possible to control phone order via the drop-down menu', function() {
+      var queryField = element(by.model('$ctrl.query'));
+      var orderSelect = element(by.model('$ctrl.orderProp'));
+      var nameOption = orderSelect.element(by.css('option[value="name"]'));
+      var phoneNameColumn = element.all(by.repeater('phone in $ctrl.phones').column('phone.name'));
+      function getNames() {
+        return phoneNameColumn.map(function(elem) {
+          return elem.getText();
+        });
+      }
+      queryField.sendKeys('tablet');   // Let's narrow the dataset to make the assertions shorter
+      expect(getNames()).toEqual([
+        'Motorola XOOM\u2122 with Wi-Fi',
+        'MOTOROLA XOOM\u2122'
+      ]);
+      nameOption.click();
+      expect(getNames()).toEqual([
+        'MOTOROLA XOOM\u2122',
+        'Motorola XOOM\u2122 with Wi-Fi'
+      ]);
+    });
 
+    it('should render phone specific links', function() {
+      var query = element(by.model('$ctrl.query'));
+      query.sendKeys('nexus');
+
+      element.all(by.css('.phones li a')).first().click();
+      expect(browser.getCurrentUrl()).toContain('index.html#!/phones/nexus-s');
+    });
+
+  });
+
+});
 ```
 
+We run the application
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/5d664c58-d8eb-4b07-916f-4af2628b66b5)
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/aefe246a-16b5-460e-b9ec-d4c4cdc43be9)
+
+We run the Test cases
+
+Unit Tests
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/2cb1aab9-a3dd-4928-ab4d-d89abb44f5d9)
+
+E2E Tests
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/5d118f3e-5fd1-4dfd-ba4d-de0c888469e6)
 
 
 
