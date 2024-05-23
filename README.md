@@ -103,9 +103,13 @@ describe('PhoneCat Application', function() {
       browser.ignoreSynchronization = true;  // Disable Angular synchronization
       browser.get('http://127.0.0.1:5500/app/index.html');
     });
+
     it('should filter the phone list as a user types into the search box', function() {
+      var EC = protractor.ExpectedConditions;
       var phoneList = element.all(by.repeater('phone in $ctrl.phones'));
       var query = element(by.model('$ctrl.query'));
+
+      browser.wait(EC.presenceOf(query), 5000, 'Query input taking too long to appear in the DOM');
 
       expect(phoneList.count()).toBe(20);
 
@@ -118,20 +122,27 @@ describe('PhoneCat Application', function() {
     });
 
     it('should be possible to control phone order via the drop-down menu', function() {
+      var EC = protractor.ExpectedConditions;
       var queryField = element(by.model('$ctrl.query'));
       var orderSelect = element(by.model('$ctrl.orderProp'));
       var nameOption = orderSelect.element(by.css('option[value="name"]'));
       var phoneNameColumn = element.all(by.repeater('phone in $ctrl.phones').column('phone.name'));
+
       function getNames() {
         return phoneNameColumn.map(function(elem) {
           return elem.getText();
         });
       }
+
+      browser.wait(EC.presenceOf(queryField), 5000, 'Query input taking too long to appear in the DOM');
+      browser.wait(EC.presenceOf(orderSelect), 5000, 'Order select taking too long to appear in the DOM');
+
       queryField.sendKeys('tablet');   // Let's narrow the dataset to make the assertions shorter
       expect(getNames()).toEqual([
         'Motorola XOOM\u2122 with Wi-Fi',
         'MOTOROLA XOOM\u2122'
       ]);
+
       nameOption.click();
       expect(getNames()).toEqual([
         'MOTOROLA XOOM\u2122',
@@ -141,6 +152,24 @@ describe('PhoneCat Application', function() {
   });
 });
 ```
+
+Now let's **run the application**
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/3acad084-a0a5-486f-9a54-e5b6dafe1bfb)
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/9455d662-6853-4ef8-a3b3-614c3073f3b4)
+
+Also we have to **run the tests**
+
+Unit Tests
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/7dca1ece-5bb7-478a-9728-4c9592343924)
+
+E2E Tests
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/af370fb8-a3e9-42d6-9ea7-122f886ef11f)
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/743f88fa-c8be-453e-9fb5-3e9d9caf2d7b)
 
 ## 2. 
 
