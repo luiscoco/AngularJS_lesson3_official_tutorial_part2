@@ -173,6 +173,36 @@ E2E Tests
 
 ## 2. Step 8: Templating Links & Images
 
+In this step, we will **add thumbnail images** for the phones in the phone list, and links that, for now, will go nowhere
+
+We first add the phone images list to our application
+
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/267f4117-6679-4c89-b25f-6d44362dd9fb)
+
+Now we introduce some changes in the code
+
+**app/app.css**
+
+```css
+
+```
+
+**app/phone-list/phone-list.template.html**
+
+```javascript
+
+```
+
+**e2e-tests/scenarios.js**
+
+```javascript
+
+```
+
+
+
+
+
 
 ## 3. Step 9: Routing & Multiple Views
 
