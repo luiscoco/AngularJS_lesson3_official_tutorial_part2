@@ -318,9 +318,7 @@ E2E Tests
 
 ![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/5d118f3e-5fd1-4dfd-ba4d-de0c888469e6)
 
-
-
-
+![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/05c9da49-e57d-4336-9f71-5323a19f89a7)
 
 ## 3. Step 9: Routing & Multiple Views
 
