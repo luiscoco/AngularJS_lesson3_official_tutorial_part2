@@ -171,10 +171,10 @@ E2E Tests
 
 ![image](https://github.com/luiscoco/AngularJS_lesson3_official_tutorial_part2/assets/32194879/743f88fa-c8be-453e-9fb5-3e9d9caf2d7b)
 
-## 2. 
+## 2. Step 8: Templating Links & Images
 
 
-## 3. 
+## 3. Step 9: Routing & Multiple Views
 
 
 
